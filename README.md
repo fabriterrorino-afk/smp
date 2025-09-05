@@ -1,3 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SM Personalizados - Canecas de porcelana personalizadas. Faça seu orçamento pelo WhatsApp ou formulário."/>
+  <title>SM Personalizados</title>
+  <link rel="icon" href="/assets/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css" />
+  <script defer src="/assets/script.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-wrap">
+      <a href="#" class="brand">
+        <img src="/assets/logo.png" alt="Logo SM Personalizados" class="logo" />
+        <span class="brand-text">SM Personalizados</span>
+      </a>
+      <nav class="nav">
+        <a href="#produtos">Produtos</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#contato">Contato</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <h1>Transforme suas ideias em canecas exclusivas</h1>
+          <p>Na SM Personalizados, criamos canecas únicas para presentes, eventos e brindes corporativos. Personalização em porcelana com acabamento de alta qualidade.</p>
+          <div class="cta-group">
+            <a class="btn primary" id="btnWhatsHero" href="#">Pedir pelo WhatsApp</a>
+            <a class="btn ghost" href="#produtos">Ver produtos</a>
+          </div>
+          <div class="trust">
+            <span class="small">Criatividade</span>
+            <span class="small">Qualidade</span>
+            <span class="small">Exclusividade</span>
+          </div>
+        </div>
+        <div class="hero-art">
+          <img src="/assets/hero-mugs.png" alt="Conjunto de canecas personalizadas" />
+        </div>
+      </div>
+    </section>
+
+    <section id="sobre" class="section">
+      <div class="container">
+        <h2>Sobre</h2>
+        <p>“Na SM Personalizados, transformamos suas ideias em canecas exclusivas e únicas. Trabalhamos com personalização de canecas de porcelana para presentear ou divulgar sua marca, ou simplesmente deixar o seu dia mais especial.”</p>
+        <p class="small"><strong>Valores:</strong> Criatividade • Qualidade • Exclusividade</p>
+      </div>
+    </section>
+
+    <section id="produtos" class="section gray">
+      <div class="container">
+        <h2>Produtos</h2>
+        <div class="category-tabs" role="tablist" aria-label="Categorias">
+          <button class="tab active" data-cat="todos">Todos</button>
+          <button class="tab" data-cat="empresas">Para Empresas</button>
+          <button class="tab" data-cat="presentes">Para Presentes</button>
+          <button class="tab" data-cat="tematicas">Temáticas</button>
+        </div>
+
+        <div class="cards" id="cardsArea">
+          <!-- Product cards inserted by JS for flexibility -->
+        </div>
+
+        <h3 style="margin-top:22px">Galeria</h3>
+        <div class="gallery" id="galleryArea">
+          <!-- gallery images inserted by JS -->
+        </div>
+      </div>
+    </section>
+
+    <section id="orcamento" class="section">
+      <div class="container">
+        <h2>Orçamento rápido</h2>
+        <form id="quoteForm" class="form" enctype="multipart/form-data">
+          <div class="grid">
+            <div class="form-field">
+              <label for="nome">Nome</label>
+              <input id="nome" name="nome" type="text" placeholder="Seu nome" required/>
+            </div>
+            <div class="form-field">
+              <label for="telefone">Telefone / WhatsApp</label>
+              <input id="telefone" name="telefone" type="tel" placeholder="(51) 99140-0100" required/>
+            </div>
+            <div class="form-field">
+              <label for="produto">Tipo</label>
+              <select id="produto" name="produto">
+                <option>Caneca Clássica 300ml</option>
+                <option>Caneca Colorida</option>
+                <option>Caneca Premium</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="quantidade">Quantidade</label>
+              <input id="quantidade" name="quantidade" type="number" min="1" value="1" required/>
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="mensagem">Mensagem</label>
+            <textarea id="mensagem" name="mensagem" rows="3" placeholder="Conte sua ideia, prazo e cores"></textarea>
+          </div>
+          <div class="form-field">
+            <label for="arquivo">Anexar arte (opcional)</label>
+            <input id="arquivo" name="arquivo" type="file" accept=".png,.jpg,.jpeg,.pdf" />
+          </div>
+          <button class="btn primary" type="submit">Enviar orçamento</button>
+          <p id="formStatus" class="status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <section id="contato" class="section gray">
+      <div class="container contact">
+        <div>
+          <h2>Contato</h2>
+          <ul class="contact-list">
+            <li><strong>WhatsApp:</strong> <a id="whatsLink" href="#">(51) 99140-0100</a></li>
+            <li><strong>Instagram:</strong> <a href="https://www.instagram.com/sm_personalizadosltda" target="_blank" rel="noopener">@sm_personalizadosltda</a></li>
+            <li><strong>E-mail:</strong> <a href="mailto:contato@smpersonalizados.com.br">contato@smpersonalizados.com.br</a></li>
+          </ul>
+          <p class="small">Atendemos de segunda a sexta, 9h às 18h.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      © 2025 SM Personalizados — Todos os direitos reservados
+    </div>
+  </footer>
+
+  <a class="whatsapp-fab" id="btnWhatsFab" href="#" aria-label="Abrir WhatsApp">
+    <img src="/assets/whats.svg" alt="WhatsApp" />
+  </a>
+</body>
+</html>
 :root{
   --rosa-claro: #FADADD;
   --rosa-medio: #E89AB4;
@@ -70,3 +216,116 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--marrom);
   .gallery{grid-template-columns:1fr}
   .brand-text{display:none}
 }
+// Configurações
+const WHATS_NUMBER_E164 = "5551991400100"; // +55 51 99140-0100
+const API_BASE = ""; // leave empty if backend served from same origin
+
+const PRODUCTS = [
+  { id: 'p1', title: 'Caneca Clássica 300ml', desc: 'Porcelana branca 300ml, personalizável com sua arte ou frase.', cat: 'todos' },
+  { id: 'p2', title: 'Caneca Colorida', desc: 'Interior colorido e personalização externa em alta qualidade.', cat: 'presente' },
+  { id: 'p3', title: 'Caneca Premium', desc: 'Porcelana premium com acabamento brilhante e detalhamento fino.', cat: 'empresas' }
+];
+
+const GALLERY = [
+  '/assets/prod-classica.jpg',
+  '/assets/prod-colorida.jpg',
+  '/assets/prod-premium.jpg'
+];
+
+function toWhatsLink(msg = 'Olá! Gostaria de um orçamento de canecas.'){
+  const text = encodeURIComponent(msg);
+  return `https://wa.me/${WHATS_NUMBER_E164}?text=${text}`;
+}
+
+function initWhatsButtons(){
+  const btnHero = document.getElementById('btnWhatsHero');
+  const btnFab = document.getElementById('btnWhatsFab');
+  const whatsLink = document.getElementById('whatsLink');
+  const url = toWhatsLink();
+  [btnHero, btnFab, whatsLink].forEach(el => { if(el){ el.href = url; el.target='_blank'; el.rel='noopener'; } });
+}
+
+function renderProducts(filter='todos'){
+  const area = document.getElementById('cardsArea');
+  area.innerHTML = '';
+  const list = PRODUCTS.filter(p => filter === 'todos' || p.cat === filter || p.cat === 'todos');
+  list.forEach(p => {
+    const card = document.createElement('article');
+    card.className = 'card';
+    const img = document.createElement('img');
+    // use a fallback if not exists (keeps layout)
+    img.src = `/assets/${p.id}.jpg`;
+    img.alt = p.title;
+    const h3 = document.createElement('h3');
+    h3.textContent = p.title;
+    const pdesc = document.createElement('p');
+    pdesc.textContent = p.desc;
+    const actions = document.createElement('div');
+    actions.className = 'card-actions';
+    const btn = document.createElement('a');
+    btn.className = 'btn primary';
+    btn.href = toWhatsLink(`Olá, quero pedir: ${p.title} — Quantidade: 1 —`);
+    btn.target = '_blank';
+    btn.rel = 'noopener';
+    btn.textContent = 'Peça pelo WhatsApp';
+    actions.appendChild(btn);
+    card.appendChild(img);
+    card.appendChild(h3);
+    card.appendChild(pdesc);
+    card.appendChild(actions);
+    area.appendChild(card);
+  });
+}
+
+function renderGallery(){
+  const g = document.getElementById('galleryArea');
+  g.innerHTML = '';
+  GALLERY.forEach(src => {
+    const i = document.createElement('img');
+    i.src = src;
+    i.alt = 'Caneca personalizada';
+    g.appendChild(i);
+  });
+}
+
+function initTabs(){
+  const tabs = document.querySelectorAll('.tab');
+  tabs.forEach(t => {
+    t.addEventListener('click', () => {
+      tabs.forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      const cat = t.dataset.cat;
+      renderProducts(cat === 'presentes' ? 'presente' : (cat === 'tematicas' ? 'tematicas' : cat));
+    })
+  });
+}
+
+async function handleForm(e){
+  e.preventDefault();
+  const form = e.target;
+  const status = document.getElementById('formStatus');
+  status.style.color = '#0b7a0b';
+  status.textContent = 'Enviando...';
+
+  const formData = new FormData(form);
+  try{
+    const res = await fetch(`${API_BASE}/api/contact`, { method: 'POST', body: formData });
+    if(!res.ok) throw new Error('Falha ao enviar');
+    const data = await res.json();
+    form.reset();
+    status.textContent = data.message || 'Orçamento enviado com sucesso! Em breve entraremos em contato.';
+  }catch(err){
+    console.error(err);
+    status.style.color = '#B00020';
+    status.textContent = 'Não foi possível enviar. Tente pelo WhatsApp.';
+  }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  initWhatsButtons();
+  renderProducts('todos');
+  renderGallery();
+  initTabs();
+  const form = document.getElementById('quoteForm');
+  form.addEventListener('submit', handleForm);
+});
