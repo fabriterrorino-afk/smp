@@ -329,3 +329,230 @@ window.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('quoteForm');
   form.addEventListener('submit', handleForm);
 });
+// Configurações
+const WHATS_NUMBER_E164 = "5551991400100"; // +55 51 99140-0100
+const API_BASE = ""; // leave empty if backend served from same origin
+
+const PRODUCTS = [
+  { id: 'p1', title: 'Caneca Clássica 300ml', desc: 'Porcelana branca 300ml, personalizável com sua arte ou frase.', cat: 'todos' },
+  { id: 'p2', title: 'Caneca Colorida', desc: 'Interior colorido e personalização externa em alta qualidade.', cat: 'presente' },
+  { id: 'p3', title: 'Caneca Premium', desc: 'Porcelana premium com acabamento brilhante e detalhamento fino.', cat: 'empresas' }
+];
+
+const GALLERY = [
+  '/assets/prod-classica.jpg',
+  '/assets/prod-colorida.jpg',
+  '/assets/prod-premium.jpg'
+];
+
+function toWhatsLink(msg = 'Olá! Gostaria de um orçamento de canecas.'){
+  const text = encodeURIComponent(msg);
+  return `https://wa.me/${WHATS_NUMBER_E164}?text=${text}`;
+}
+
+function initWhatsButtons(){
+  const btnHero = document.getElementById('btnWhatsHero');
+  const btnFab = document.getElementById('btnWhatsFab');
+  const whatsLink = document.getElementById('whatsLink');
+  const url = toWhatsLink();
+  [btnHero, btnFab, whatsLink].forEach(el => { if(el){ el.href = url; el.target='_blank'; el.rel='noopener'; } });
+}
+
+function renderProducts(filter='todos'){
+  const area = document.getElementById('cardsArea');
+  area.innerHTML = '';
+  const list = PRODUCTS.filter(p => filter === 'todos' || p.cat === filter || p.cat === 'todos');
+  list.forEach(p => {
+    const card = document.createElement('article');
+    card.className = 'card';
+    const img = document.createElement('img');
+    // use a fallback if not exists (keeps layout)
+    img.src = `/assets/${p.id}.jpg`;
+    img.alt = p.title;
+    const h3 = document.createElement('h3');
+    h3.textContent = p.title;
+    const pdesc = document.createElement('p');
+    pdesc.textContent = p.desc;
+    const actions = document.createElement('div');
+    actions.className = 'card-actions';
+    const btn = document.createElement('a');
+    btn.className = 'btn primary';
+    btn.href = toWhatsLink(`Olá, quero pedir: ${p.title} — Quantidade: 1 —`);
+    btn.target = '_blank';
+    btn.rel = 'noopener';
+    btn.textContent = 'Peça pelo WhatsApp';
+    actions.appendChild(btn);
+    card.appendChild(img);
+    card.appendChild(h3);
+    card.appendChild(pdesc);
+    card.appendChild(actions);
+    area.appendChild(card);
+  });
+}
+
+function renderGallery(){
+  const g = document.getElementById('galleryArea');
+  g.innerHTML = '';
+  GALLERY.forEach(src => {
+    const i = document.createElement('img');
+    i.src = src;
+    i.alt = 'Caneca personalizada';
+    g.appendChild(i);
+  });
+}
+
+function initTabs(){
+  const tabs = document.querySelectorAll('.tab');
+  tabs.forEach(t => {
+    t.addEventListener('click', () => {
+      tabs.forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      const cat = t.dataset.cat;
+      renderProducts(cat === 'presentes' ? 'presente' : (cat === 'tematicas' ? 'tematicas' : cat));
+    })
+  });
+}
+
+async function handleForm(e){
+  e.preventDefault();
+  const form = e.target;
+  const status = document.getElementById('formStatus');
+  status.style.color = '#0b7a0b';
+  status.textContent = 'Enviando...';
+
+  const formData = new FormData(form);
+  try{
+    const res = await fetch(`${API_BASE}/api/contact`, { method: 'POST', body: formData });
+    if(!res.ok) throw new Error('Falha ao enviar');
+    const data = await res.json();
+    form.reset();
+    status.textContent = data.message || 'Orçamento enviado com sucesso! Em breve entraremos em contato.';
+  }catch(err){
+    console.error(err);
+    status.style.color = '#B00020';
+    status.textContent = 'Não foi possível enviar. Tente pelo WhatsApp.';
+  }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  initWhatsButtons();
+  renderProducts('todos');
+  renderGallery();
+  initTabs();
+  const form = document.getElementById('quoteForm');
+  form.addEventListener('submit', handleForm);
+});
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="#25D366" d="M16 .5C7.5.5.6 7.5.6 16c0 2.7.7 5.3 2.1 7.6L.5 31.5l8-2.1c2.2 1.2 4.7 1.9 7.3 1.9 8.5 0 15.4-7 15.4-15.5S24.5.5 16 .5z"/><path fill="#fff" d="M25 20.4c-.3.9-1.7 1.6-2.3 1.6-.6 0-1.3.2-4.4-1-3.7-1.5-6-5.2-6.2-5.5-.2-.3-1.5-2.1-1.5-4s1-2.8 1.4-3.2c.4-.4.9-.5 1.2-.5h.9c.3 0 .7.1 1 .8.4 1 .9 2.5 1 2.7.1.2.1.4 0 .6-.1.2-.2.4-.4.6s-.4.5-.6.7c-.2.2-.4.5-.2.9.2.4.9 1.5 1.9 2.4 1.3 1.1 2.4 1.6 2.8 1.8.4.2.7.2 1-.1.3-.3 1.1-1.2 1.4-1.6.3-.4.6-.3.9-.2.3.1 2.1 1 2.3 1.1.3.2.5.2.6.3.1.1.1.3 0 .5z"/></svg>
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
+import multer from "multer";
+import nodemailer from "nodemailer";
+import path from "path";
+import fs from "fs";
+import dotenv from "dotenv";
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+const ORIGIN = process.env.CORS_ORIGIN || "*";
+
+// Middlewares
+app.use(helmet());
+app.use(cors({ origin: ORIGIN }));
+app.use(express.json());
+
+// Rate limit basic
+const limiter = rateLimit({ windowMs: 60 * 1000, max: 30 });
+app.use("/api/", limiter);
+
+// Static frontend (served by backend)
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "frontend")));
+
+// Upload config
+const uploadDir = path.join(__dirname, "backend", "uploads");
+if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+
+const storage = multer.diskStorage({
+  destination: (_req, _file, cb) => cb(null, uploadDir),
+  filename: (_req, file, cb) => {
+    const unique = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    const ext = path.extname(file.originalname);
+    cb(null, file.fieldname + "-" + unique + ext);
+  },
+});
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+  fileFilter: (_req, file, cb) => {
+    const ok = /\.(png|jpg|jpeg|pdf)$/i.test(file.originalname);
+    cb(ok ? null : new Error("Arquivo inválido"));
+  },
+});
+
+// Email transporter
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT || 587),
+  secure: process.env.SMTP_SECURE === "true",
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
+
+app.post("/api/contact", upload.single("arquivo"), async (req, res) => {
+  try {
+    const { nome, email, telefone, mensagem, produto, quantidade } = req.body;
+
+    if (!nome || !telefone) {
+      return res.status(400).json({ message: "Nome e telefone são obrigatórios." });
+    }
+
+    const to = process.env.TO_EMAIL || "contato@smpersonalizados.com.br";
+    const from = process.env.FROM_EMAIL || process.env.SMTP_USER || "no-reply@smpersonalizados.com.br";
+
+    const text = [
+      `Nova solicitação de orçamento:`, "",
+      `Nome: ${nome}`,
+      `Telefone: ${telefone}`,
+      `E-mail: ${email || '-'}`,
+      `Produto: ${produto || "-"}`,
+      `Quantidade: ${quantidade || "-"}`,
+      `Mensagem: ${mensagem || "-"}`,
+    ].join("\n");
+
+    const attachments = [];
+    if (req.file) {
+      attachments.push({
+        filename: req.file.originalname,
+        path: req.file.path,
+      });
+    }
+
+    await transporter.sendMail({
+      to,
+      from,
+      subject: "Novo orçamento - SM Personalizados",
+      text,
+      attachments,
+    });
+
+    res.json({ message: "Orçamento enviado com sucesso! Em breve entraremos em contato." });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erro ao enviar. Contate via WhatsApp como alternativa." });
+  }
+});
+
+// SPA/Static fallback
+app.get("*", (_req, res) => {
+  res.sendFile(path.join(__dirname, "frontend", "index.html"));
+});
+
+app.listen(PORT, () => {
+  console.log("Servidor rodando em http://localhost:" + PORT);
+});
